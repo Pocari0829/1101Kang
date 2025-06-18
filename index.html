@@ -1,487 +1,434 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>미림 마이스터고 1학년 1반 AI 활용 실태 및 윤리 의식 조사</title>
+    <title>미림 마이스터고 1학년 1반의 AI 활용 실태 및 윤리 의식 조사 - 인포그래픽</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
+        /* Custom Styles */
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-            background-color: #F4F7F9; /* 기본 배경색 */
-            color: #263238; /* 기본 텍스트 색상 */
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F4F7F9; /* 기본 배경 */
+            color: #263238; /* Dark Text */
+            scroll-behavior: smooth;
         }
         .chart-container {
-            position: relative; /* Chart.js 반응형 설정을 위해 필요 */
-            margin: auto;
-            background-color: #FFFFFF;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative;
+            margin: auto; /* 가운데 정렬 */
         }
         .card {
-            background-color: #FFFFFF; /* 카드 배경색 */
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            margin-bottom: 1.5rem;
+            background-color: #FFFFFF; /* Light Background for cards */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
         }
-        .section-title {
-            font-size: 1.875rem; /* 30px */
-            font-weight: 700;
-            color: #2A62B6; /* Primary Blue */
+        h1, h2, h3, h4 {
+            color: #2A62B6; /* Primary Blue for headings */
+            word-break: keep-all; /* 제목 줄바꿈 시 단어 단위 */
+        }
+        .text-primary { color: #2A62B6; }
+        .text-secondary { color: #4ECDC4; }
+        .bg-primary { background-color: #2A62B6; }
+        .bg-secondary { background-color: #4ECDC4; }
+        .bg-accent-grey { background-color: #A9A9A9; }
+        .bg-supporting-light-blue { background-color: #E0F2FE; }
+
+        /* Font sizes adjusted for infographic */
+        .report-title-main { font-size: 2.25rem; line-height: 2.75rem; font-weight: 900; } /* 28pt ~ 36px */
+        .level1-title { font-size: 1.75rem; line-height: 2.25rem; font-weight: 700; margin-bottom: 1rem; } /* 18pt ~ 28px */
+        .level2-title { font-size: 1.375rem; line-height: 1.875rem; font-weight: 700; margin-bottom: 0.75rem; } /* 14pt ~ 22px */
+        .level3-title { font-size: 1.125rem; line-height: 1.625rem; font-weight: 500; margin-bottom: 0.5rem; } /* 12pt ~ 18px */
+        .body-text { font-size: 1rem; line-height: 1.75rem; font-weight: 400; } /* 11pt ~ 16px */
+        .caption-text { font-size: 0.875rem; line-height: 1.25rem; color: #546E7A; /* Blue Grey 600 */ }
+
+        /* Table styles */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
             margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #4ECDC4; /* Secondary Teal */
         }
-        .subsection-title {
-            font-size: 1.25rem; /* 20px */
-            font-weight: 600;
-            color: #2A62B6; /* Primary Blue */
-            margin-top: 1rem;
-            margin-bottom: 0.75rem;
-        }
-        .key-finding-text {
-            background-color: #E0F2FE; /* Supporting Light Blue */
+        .custom-table th, .custom-table td {
+            border: 1px solid #A9A9A9; /* Accent Grey */
             padding: 0.75rem;
-            border-radius: 0.375rem;
-            margin-top: 1rem;
-            font-size: 0.875rem; /* 14px */
-            line-height: 1.6;
+            text-align: left;
+            font-size: 0.9rem;
         }
+        .custom-table th {
+            background-color: #E0F2FE; /* Supporting Light Blue */
+            font-weight: 700;
+        }
+
+        /* Interview card styles */
         .interview-card {
-            border-left: 4px solid #4ECDC4; /* Secondary Teal */
+            border-left: 5px solid #4ECDC4; /* Secondary Teal */
+            padding-left: 1rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
-        /* Tailwind CSS 사용자 정의 */
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primaryBlue: '#2A62B6',
-                        secondaryTeal: '#4ECDC4',
-                        accentGrey: '#A9A9A9',
-                        supportingLightBlue: '#E0F2FE',
-                        darkText: '#263238',
-                        lightBackground: '#FFFFFF',
-                        bodyBackground: '#F4F7F9',
-                    }
-                }
-            }
+        .interview-content {
+            flex-grow: 1;
+        }
+        .keyword-tag {
+            background-color: #E0F2FE;
+            color: #2A62B6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* pill shape */
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .quote-text {
+            font-style: italic;
+            color: #37474F; /* Blue Grey 800 */
+            border-left: 3px solid #A9A9A9;
+            padding-left: 0.75rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        /* Chart.js Tooltip Customization */
+        .chartjs-tooltip {
+            opacity: 0; /* Hidden by default, Chart.js will manage visibility */
+            position: absolute;
+            background: rgba(38, 50, 56, 0.95); /* Dark Text with opacity */
+            color: white;
+            border-radius: 0.375rem; /* rounded-md */
+            padding: 0.5rem 0.75rem; /* py-2 px-3 */
+            font-size: 0.875rem; /* text-sm */
+            pointer-events: none;
+            transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+            transform: translate(-50%, -100%); /* Adjust for better positioning above points */
+            z-index: 100;
+        }
+        .chartjs-tooltip-key {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 6px;
+            border-radius: 3px;
+        }
+        .chartjs-tooltip-title {
+            font-weight: 700;
+            margin-bottom: 0.375rem;
+        }
+        .chartjs-tooltip-body-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+        .chartjs-tooltip-body-item-label {
+            margin-left: 0.25rem;
         }
     </style>
 </head>
-<body class="bg-bodyBackground text-darkText">
-    <div class="container mx-auto p-4 md:p-8">
-        <header class="text-center mb-12 card py-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-primaryBlue mb-2">미림 마이스터고 1학년 1반의 AI 활용 실태 및 윤리 의식 조사</h1>
-            <p class="text-md text-accentGrey">1학년 (1)반 (1)조: 강태인, 윤지온, 이주호, 차윤미</p>
-            <p class="text-sm text-accentGrey">작성일: 2025년 5월 26일</p>
-        </header>
+<body class="antialiased">
+    <header class="bg-primary text-white py-10 px-4 text-center shadow-lg">
+        <div class="container mx-auto">
+            <h1 class="report-title-main mb-2">미림 마이스터고 1학년 1반의 AI 활용 실태 및 윤리 의식 조사</h1>
+            <p class="body-text">1학년 1반 1조 (강태인, 윤지온, 이주호, 차윤미)</p>
+            <p class="caption-text mt-1">작성일: 2025년 5월 26일</p>
+        </div>
+    </header>
 
-        <main>
-            <section id="motivation-purpose" class="mb-12 card">
-                <h2 class="section-title">1. 조사 동기와 목적</h2>
-                <p class="text-base leading-relaxed">
-                    최근 AI 사용이 급증하면서 신뢰도, 출처 표기, 학습 효과 등 다양한 윤리적 문제가 대두되고 있다. 이에 따라 본 조사는 학생들이 AI를 사용할 때 발생할 수 있는 윤리적 문제를 인식하고, 표절을 방지하며 책임감 있는 활용 태도를 기를 수 있도록 핵심 정보를 제공하는 것을 목적으로 실시한다.
-                </p>
-            </section>
-
-            <section id="research-plan" class="mb-12 card">
-                <h2 class="section-title">2. 조사 계획</h2>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <h3 class="subsection-title">조사 기간</h3>
-                        <p class="bg-supportingLightBlue p-3 rounded-md">2025년 5월 14일 ~ 2025년 5월 19일</p>
-                    </div>
-                    <div>
-                        <h3 class="subsection-title">조사 방법 및 대상</h3>
-                        <div class="space-y-4">
-                            <div class="p-3 border border-secondaryTeal rounded-md">
-                                <h4 class="font-semibold text-primaryBlue">설문조사</h4>
-                                <p><strong class="text-darkText">대상:</strong> 미림 마이스터고 1학년 1반 전체 학생들</p>
-                                <p><strong class="text-darkText">내용:</strong> AI 질문 빈도, AI 답변 신뢰도(5단계), AI 사용 후 출처 표기 경험</p>
-                            </div>
-                            <div class="p-3 border border-secondaryTeal rounded-md">
-                                <h4 class="font-semibold text-primaryBlue">인터뷰</h4>
-                                <p><strong class="text-darkText">대상:</strong> 미림 마이스터고 1학년 1반 학생 2명</p>
-                                <p><strong class="text-darkText">내용:</strong> AI 사용 경험 및 목적, 신뢰도, 프롬프트 작성 방식, 출처 표기 여부, AI 활용 성장 경험</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="research-results" class="mb-12">
-                <h2 class="section-title text-center mb-8">3. 조사 결과</h2>
-                
-                <div id="survey-results" class="mb-10">
-                    <h3 class="text-2xl font-semibold text-primaryBlue mb-6 text-center">가. 설문조사 결과</h3>
-                    <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="chart-container w-full h-auto md:h-[400px] lg:h-[450px] flex flex-col items-center">
-                            <h4 class="subsection-title text-center mb-2">모르는 내용이 있을 때, 얼마나 자주 AI에게 질문하나요?</h4>
-                            <canvas id="aiUsageFrequencyChart"></canvas>
-                            <div class="key-finding-text mt-4 w-full">
-                                <strong class="text-primaryBlue">주목할 만한 내용:</strong> 학생들의 73.7%가 AI를 ‘보통’ 이상 자주 활용하는 것으로 나타났다. 가장 많은 응답은 ‘종종 쓴다’(47.4%)로, AI를 학습 도구로 일상적으로 사용하는 경향이 뚜렷하다. ‘자주 쓴다’(26.3%)도 상당한 비중을 차지해 적극적인 활용이 이루어지고 있다. 반면 ‘아예 쓰지 않는다’는 응답은 5.3%에 불과해 대부분 학생이 AI를 활용하고 있음을 보인다.
-                            </div>
-                        </div>
-                        <div class="chart-container w-full h-auto md:h-[400px] lg:h-[450px] flex flex-col items-center">
-                            <h4 class="subsection-title text-center mb-2">AI의 말을 얼마만큼 믿나요?</h4>
-                            <canvas id="aiTrustLevelChart"></canvas>
-                            <div class="key-finding-text mt-4 w-full">
-                                <strong class="text-primaryBlue">주목할 만한 내용:</strong> 학생들 중 AI의 말을 ‘그렇다’ 이상으로 신뢰하는 비율이 57.9%(‘그렇다’ 52.6%, ‘매우 그렇다’ 5.3%)로 다수를 차지한다. ‘보통이다’라고 응답한 학생도 42.1%로 적지 않아, 전체적으로 학생들이 AI 답변을 높은 신뢰 수준으로 인식하고 있음을 보여준다. ‘전혀 믿지 않는다’라거나 ‘아니다’라고 답한 학생은 없어서, AI에 대한 신뢰가 전반적으로 긍정적인 편임을 알 수 있다.
-                            </div>
-                        </div>
-                        <div class="chart-container w-full h-auto md:h-[400px] lg:h-[450px] flex flex-col items-center">
-                            <h4 class="subsection-title text-center mb-2">AI를 사용하고 나서 출처를 남긴 경험이 있나요?</h4>
-                            <canvas id="aiCitationExperienceChart"></canvas>
-                            <div class="key-finding-text mt-4 w-full">
-                                <strong class="text-primaryBlue">주목할 만한 내용:</strong> 학생들의 57.9%가 AI 사용 후 출처를 남기지 않는 편인 것으로 나타났다(‘매우 아니다’ 36.8%, ‘아니다’ 21.1%). 출처를 남긴다고 응답한 학생은 36.9%로, ‘그렇다’ 31.6%와 ‘매우 그렇다’ 5.3%를 합한 수치이다. 이는 학생들이 AI를 활용하면서 출처 표기에 대해 상대적으로 관심이나 실천이 낮은 경향을 보여주며, 출처 표기의 중요성에 대한 인식 제고가 필요함을 시사한다.
-                            </div>
-                        </div>
-                        </div>
-                </div>
-
-                <div id="interview-results" class="card">
-                    <h3 class="text-2xl font-semibold text-primaryBlue mb-6 text-center">나. 인터뷰 결과 요약</h3>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="interview-card p-4 rounded-md shadow-sm">
-                            <h4 class="text-xl font-semibold text-secondaryTeal mb-3">김서연 학생</h4>
-                            <ul class="space-y-3">
-                                <li class="border-b pb-2">
-                                    <strong class="text-primaryBlue">시험/과제 활용 (빈도: 4):</strong>
-                                    <p class="text-sm">"시험 준비할 때 예상문제 같은 거 풀어달라고 하거나 과제 하면서 아이디어 얻기 위해서"</p>
-                                    <p class="text-xs bg-supportingLightBlue p-2 rounded mt-1">요약: AI를 학업에 직접적으로 활용하며 효율성을 높이려는 경향이 나타난다. 개인 학습 및 과제 수행에 AI가 중요한 도구로 사용된다.</p>
-                                </li>
-                                <li class="border-b pb-2">
-                                    <strong class="text-primaryBlue">프롬프트 개선 (빈도: 3):</strong>
-                                    <p class="text-sm">"처음에는 대충 얘기하고 이렇게 천천히 개선하는 방향인 것 같은데"</p>
-                                    <p class="text-xs bg-supportingLightBlue p-2 rounded mt-1">요약: AI와의 상호작용에서 초기 입력보다 점진적인 개선을 통해 원하는 결과를 얻으려 시도한다. 이는 AI 활용 능동성을 보여준다.</p>
-                                </li>
-                                <li>
-                                    <strong class="text-primaryBlue">AI 신뢰도 (빈도: 2):</strong>
-                                    <p class="text-sm">"나는 한 90% 믿기는 하는데 내가 딱 봤을 때 읽었을 때 이거 좀 이상한데 아니면은 대부분은 믿긴 해."</p>
-                                    <p class="text-xs bg-supportingLightBlue p-2 rounded mt-1">요약: AI 응답에 대해 높은 신뢰도를 보이나, 동시에 자신의 판단으로 오류 여부를 검토하는 비판적 인식이 존재한다.</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="interview-card p-4 rounded-md shadow-sm">
-                            <h4 class="text-xl font-semibold text-secondaryTeal mb-3">이건우 학생</h4>
-                            <ul class="space-y-3">
-                                <li class="border-b pb-2">
-                                    <strong class="text-primaryBlue">AI 신뢰도 (빈도: 3):</strong>
-                                    <p class="text-sm">"100%에 가깝다고 볼 수 있습니다."</p>
-                                    <p class="text-xs bg-supportingLightBlue p-2 rounded mt-1">요약: AI의 정확성과 유용성에 대해 매우 높은 신뢰를 보인다. 학습 도구로서 전적으로 의존하는 경향을 나타냈다.</p>
-                                </li>
-                                <li class="border-b pb-2">
-                                    <strong class="text-primaryBlue">다양한 AI 비교 (빈도: 4):</strong>
-                                    <p class="text-sm">"제미니는 긴 글을 쓸 때 매우 용하다고 생각하고…"</p>
-                                    <p class="text-xs bg-supportingLightBlue p-2 rounded mt-1">요약: 리튼, GPT, 제미니 등 다양한 도구를 비교 사용하며 목적별 효율을 평가한다. 실용성과 경제성을 기준으로 AI를 선택하는 모습을 보였다.</p>
-                                </li>
-                                <li>
-                                    <strong class="text-primaryBlue">출처 미기재 (빈도: 2):</strong>
-                                    <p class="text-sm">"출처를 남기지 않는 편입니다."</p>
-                                    <p class="text-xs bg-supportingLightBlue p-2 rounded mt-1">요약: AI 사용 시 출처를 밝히지 않아 학습 윤리 문제가 드러난다. 전문성 있는 모습으로 보이고 싶어하는 심리적 동기가 일부 작용하는 것으로 파악됐다.</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- 워드클라우드 이미지 추가 -->
-                    <div class="card mt-10">
-                        <h3 class="text-2xl font-semibold text-primaryBlue mb-6 text-center">다. 인터뷰 주요 내용 워드클라우드</h3>
-                        <div class="flex justify-center items-center p-4">
-                            <img src="src/국어 워드클라우드.jpg" alt="인터뷰 내용 기반 워드클라우드" class="max-w-full h-auto rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/800x400/A9A9A9/FFFFFF?text=워드클라우드+이미지+불러오기+실패'">
-                        </div>
-                        <div class="key-finding-text mt-4 w-full">
-                            <strong class="text-primaryBlue">핵심 의미 요약:</strong> 워드클라우드는 AI의 활용 목적과 방식, 그리고 사용자의 AI에 대한 인식이 주요 관심사임을 보여준다. 특히 학생들은 학습, 과제 수행, 지식 습득 등 구체적인 목표 달성을 위해 AI를 적극적으로 사용하는 경향을 나타낸다.
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="conclusion-recommendation" class="mb-12 card">
-                <h2 class="section-title">4. 결론 및 제언</h2>
-                <div>
-                    <h3 class="subsection-title">1) 결론 요약</h3>
-                    <p class="text-base leading-relaxed bg-supportingLightBlue p-4 rounded-md">
-                        본 조사는 미림마이스터고 1학년 1반 학생들의 생성형 AI 활용 실태 및 윤리 의식을 파악하는 것을 목적으로 실시했다. 조사 결과, 다음 세 가지 주요 발견점을 확인했다.
-                        <br><br>
-                        1. **높은 AI 활용도와 신뢰**: 대부분의 학생들이 모르는 내용을 질문할 때 AI를 '자주' 또는 '매우 자주' 활용하며(73.7%), AI가 생성한 내용에 대해서도 높은 신뢰를 보이는 것으로 나타났다(57.9% '그렇다' 이상 신뢰). 이는 AI가 학생들의 학습 과정에 깊이 스며들어 있으며, 정보를 탐색하고 이해하는 데 중요한 역할을 하고 있음을 보여준다.
-                        <br><br>
-                        2. **출처 표기 실천의 부족**: AI를 통해 얻은 정보에 대한 출처를 표기하거나 명시하는 실천은 부족한 것으로 드러났다. 응답자의 57.9%가 AI 사용 후 출처를 남기지 않는다고 답했으며, 인터뷰에서도 출처 미기재 경향을 확인했다. 이는 학생들이 AI의 도움을 받고 있음에도 불구하고, 그 출처를 남기는 것의 중요성이나 필요성에 대한 인식이 상대적으로 낮음을 시사한다.
-                        <br><br>
-                        3. **다양한 AI 활용과 비판적 인식**: 학생들은 다양한 생성형 AI 도구를 비교하여 목적에 맞게 활용하고 있었다. 또한 AI 답변에 대한 높은 신뢰도와 더불어, 일부 학생은 AI의 오류 가능성을 인지하고 스스로 검토하는 비판적 인식을 보였다.
-                    </p>
-                </div>
-                <div class="mt-6">
-                    <h3 class="subsection-title">2) 제언 및 다짐</h3>
-                    <p class="text-base leading-relaxed">
-                        이러한 결과는 향후 학교 교육에서 생성형 AI 활용의 윤리적 측면에 대한 **보다 구체적인 지도가 시급함**을 시사한다. 특히 AI를 사용할 때 발생할 수 있는 표절 문제, 정보의 정확성과 신뢰성, 그리고 타인의 지적 재산권을 존중하는 태도 등에 대한 **체계적인 교육 방안 마련이 필요하다.**
-                        <br><br>
-                        **학생들은 AI를 단순히 편리한 도구로 여기는 것을 넘어, 책임감 있는 디지털 시민으로 성장해야 한다.** 이를 위해 다음 세 가지 제언을 제안한다.
-                        <br><br>
-                        * **첫째, AI 활용 시 출처 명시 의무에 대한 명확한 가이드라인을 제공하고, 과제 제출 시 AI 활용 내용을 구체적으로 명시하도록 지도해야 한다.**
-                        * **둘째, AI가 생성한 정보의 신뢰성을 비판적으로 평가하고, 교차 검증하는 능력을 함양할 수 있도록 사례 기반의 교육 프로그램을 도입해야 한다.**
-                        * **셋째, AI가 제공하는 정보에 대한 맹목적인 신뢰를 지양하고, 정보의 편향성이나 오작동 가능성 등을 인지하도록 토론 및 탐구 활동을 강화해야 한다.**
-                        <br><br>
-                        본 보고서 작성팀은 이번 조사를 통해 얻은 결과를 바탕으로, 앞으로 AI를 **더욱 책임감 있고 윤리적인 자세로 활용하며, 학내외 동료들에게도 올바른 AI 활용 태도를 전파하는 데 기여할 것을 다짐한다.**
-                    </p>
-                </div>
-            </section>
-
-            <section id="references" class="mb-12 card">
-                <h2 class="section-title">5. 참고 자료</h2>
-                <p>본 보고서 작성 시 참고한 구체적인 외부 자료는 명시되지 않았다.</p>
-            </section>
-        </main>
-
-        <footer class="text-center mt-12 pt-8 border-t border-accentGrey">
-            <p class="text-sm text-accentGrey">
-                미림 마이스터고 1학년 (1)반 (1)조 (강태인, 윤지온, 이주호, 차윤미)
+    <main class="container mx-auto p-4 md:p-8">
+        <section id="motivation-purpose" class="card">
+            <h2 class="level1-title">1. 조사 동기와 목적</h2>
+            <p class="body-text">
+                최근 AI 사용이 급증하면서 신뢰도, 출처 표기, 학습 효과 등 다양한 윤리적 문제가 대두되고 있다.
+                이에 따라 본 조사는 학생들이 AI를 사용할 때 발생할 수 있는 윤리적 문제를 인식하고, 표절을 방지하며 책임감 있는 활용 태도를 기를 수 있도록 핵심 정보를 제공하는 것을 목적으로 실시한다.
             </p>
-            <p class="text-xs text-accentGrey">인포그래픽 생성일: <span id="generationDate"></span></p>
-        </footer>
-    </div>
+        </section>
+
+        <section id="investigation-plan" class="card">
+            <h2 class="level1-title">2. 조사 계획</h2>
+            <p class="body-text mb-2"><strong class="text-secondary">조사 기간:</strong> 5월 14일 ~ 5월 19일</p>
+            <h3 class="level2-title mt-4">조사 방법과 대상 조사</h3>
+            <div class="overflow-x-auto">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>조사 방법</th>
+                            <th>조사 대상</th>
+                            <th>조사 내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>설문조사</td>
+                            <td>미림 마이스터고 1학년 1반 전체 학생들</td>
+                            <td>학생들이 모르는 내용을 접했을 때 AI에게 얼마나 자주 질문하는지를 조사했다. AI의 답변을 어느 정도 신뢰하는지를 5단계 척도로 질문했다. AI 사용 후 출처를 남긴 경험이 있는지를 확인했다. 각 문항은 학생들의 AI 활용 태도와 윤리 의식 파악을 목적으로 구성되었다.</td>
+                        </tr>
+                        <tr>
+                            <td>인터뷰</td>
+                            <td>미림 마이스터고 1학년 1반 2명</td>
+                            <td>학생들의 AI 사용 경험과 사용 목적은 무엇인지, AI를 사용할 때 신뢰도와 프롬프트 작성 방식은 어떤지, 출처 표기 여부와 AI 활용을 통한 성장 경험이 있는지를 조사했다.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="results" class="space-y-8">
+            <h2 class="level1-title text-center">3. 조사 결과</h2>
+
+            <article id="survey-results" class="card">
+                <h3 class="level2-title">가. 설문조사 결과</h3>
+                <p class="body-text mb-6">총 19명의 학생이 설문에 참여했다.</p>
+
+                <div class="mb-12">
+                    <h4 class="level3-title text-center mb-1">1. 모르는 내용이 있을 때, 얼마나 자주 AI에게 질문하나요?</h4>
+                    <div class="chart-container w-full max-w-2xl h-80 md:h-96">
+                        <canvas id="aiUsageFrequencyChart"></canvas>
+                    </div>
+                    <p class="caption-text mt-3 text-center">학생들의 73.7%가 AI를 보통 이상 자주 활용하며, 특히 종종 쓴다(47.4%)는 응답이 가장 많았다.</p>
+                </div>
+
+                <div class="mb-12">
+                    <h4 class="level3-title text-center mb-1">2. AI의 말을 얼마만큼 믿나요?</h4>
+                    <div class="chart-container w-full max-w-md h-80 md:h-96">
+                        <canvas id="aiTrustLevelChart"></canvas>
+                    </div>
+                    <p class="caption-text mt-3 text-center">AI의 말을 그렇다 이상으로 신뢰하는 비율이 57.9%로 다수를 차지했으며, 보통이다도 42.1%로 나타났다. AI에 대한 불신은 없었다.</p>
+                </div>
+
+                <div>
+                    <h4 class="level3-title text-center mb-1">3. AI를 사용하고 나서 출처를 남긴 경험이 있나요?</h4>
+                    <div class="chart-container w-full max-w-2xl h-80 md:h-96">
+                        <canvas id="sourceCitationChart"></canvas>
+                    </div>
+                    <p class="caption-text mt-3 text-center">학생들의 57.9%가 AI 사용 후 출처를 남기지 않는 편으로 나타나, 출처 표기 인식이 낮은 경향을 보였다. (*비율 합계는 반올림으로 100%를 초과할 수 있음)</p>
+                </div>
+            </article>
+
+            <article id="interview-results" class="card">
+                <h3 class="level2-title">나. 인터뷰 결과</h3>
+                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                    <div class="interview-card p-4 bg-gray-50 rounded-lg">
+                        <div class="interview-content">
+                            <h4 class="level3-title text-secondary">김서연 학생</h4>
+                            <div class="mt-2">
+                                <span class="keyword-tag">시험/과제 활용 (빈도:4)</span>
+                                <span class="keyword-tag">프롬프트 개선 (빈도:3)</span>
+                                <span class="keyword-tag">AI 신뢰도 (빈도:2)</span>
+                            </div>
+                            <p class="quote-text mt-3">시험 준비할 때 예상문제 같은 거 풀어달라고하거나 과제 하면서 아이디어 얻기 위해서</p>
+                            <p class="quote-text">처음에는 대충 얘기하고 이렇게 천천히 개선하는 방향인 것 같은데</p>
+                            <p class="quote-text">나는 한 90% 믿기는 하는데 내가 딱 봤을 때 읽었을 때 이거 좀 이상한데 아니면은 대부분은 믿긴 해.</p>
+                            <p class="body-text mt-3"><strong>요약:</strong> AI를 학업에 직접 활용하며 효율성을 높이고, 점진적 프롬프트 개선으로 원하는 결과를 얻으려 한다. AI 응답에 높은 신뢰를 보이면서도 비판적 검토를 병행한다.</p>
+                        </div>
+                        <img src="src/김서연 인터뷰.jpg" alt="김서연 학생 인터뷰 사진" class="mt-4 w-full h-48 object-cover rounded-lg shadow-md">
+                    </div>
+
+                    <div class="interview-card p-4 bg-gray-50 rounded-lg">
+                        <div class="interview-content">
+                            <h4 class="level3-title text-secondary">이건우 학생</h4>
+                            <div class="mt-2">
+                                <span class="keyword-tag">AI 신뢰도 (빈도:3)</span>
+                                <span class="keyword-tag">다양한 AI 비교 (빈도:4)</span>
+                                <span class="keyword-tag">출처 미기재 (빈도:2)</span>
+                            </div>
+                            <p class="quote-text mt-3">100%에 가깝다고 볼 수 있습니다.</p>
+                            <p class="quote-text">제미니는 긴 글을 쓸 때 매우 용하다고 생각하고…</p>
+                            <p class="quote-text">출처를 남기지 않는 편입니다.</p>
+                            <p class="body-text mt-3"><strong>요약:</strong> AI의 정확성과 유용성에 매우 높은 신뢰를 보이며 학습 도구로 의존하는 경향이 있다. 다양한 AI 도구를 비교 사용하며 목적별 효율을 평가하나, 출처는 밝히지 않아 학습 윤리 문제가 드러난다.</p>
+                        </div>
+                        <img src="src/이건우 인터뷰.jpg" alt="이건우 학생 인터뷰 사진" class="mt-4 w-full h-48 object-cover rounded-lg shadow-md">
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section id="conclusion-suggestions" class="card">
+            <h2 class="level1-title">4. 결론 및 제언</h2>
+            <h3 class="level2-title mt-4">1) 결론 요약</h3>
+            <p class="body-text">
+                조사 결과, 대부분의 학생들이 AI를 학습 도구로 자주 활용하고 있으며, AI의 답변에 대해서도 전반적으로 높은 신뢰를 보이는 것으로 나타났다. 이는 AI가 학생들의 학습 과정에 깊이 스며들어 있으며, 정보를 탐색하고 이해하는 데 있어 중요한 역할을 하고 있음을 보여준다. 그러나 그에 반해, AI를 통해 얻은 정보에 대한 출처를 표기하거나 명시하는 실천은 부족한 것으로 드러났다. 많은 학생들이 AI의 도움을 받고 있음에도 불구하고, 그 출처를 남기는 것의 중요성이나 필요성에 대해 상대적으로 낮은 인식을 가지고 있는 것으로 해석된다.
+            </p>
+            <h3 class="level2-title mt-6">2) 제언</h3>
+            <p class="body-text">
+                AI를 활용한 학습 과정에서 학생들은 출처를 정확히 밝히는 습관을 기르고, AI가 제공하는 정보의 정확성과 신뢰성을 비판적으로 평가해야 하며, 타인의 지식재산권을 존중하는 태도를 가져야 한다. 또한, AI와 인간의 협업에서 발생할 수 있는 윤리적 문제를 비판적으로 사고하고, 단순히 기술의 편리함만을 추구하기보다 정보의 신뢰성과 도덕성을 함께 고려하는 균형 잡힌 사고를 통해 책임감 있고 성숙한 디지털 시민으로 성장해야 한다.
+            </p>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <img src="src/wordcloud.png" alt="AI 활용 조사 관련 워드클라우드" class="w-full max-w-sm mx-auto mb-6 rounded-lg shadow-lg">
+            <p class="body-text">&copy; 2025 미림 마이스터고 1학년 1반 1조. All rights reserved.</p>
+            <p class="caption-text mt-2">본 인포그래픽은 제공된 학생 보고서를 기반으로 AI에 의해 생성되었습니다.</p>
+        </div>
+    </footer>
 
     <script>
-        // Utility function for label wrapping
-        function wrapLabel(label, maxWidth = 10) { // 한글 기준 글자 수
-            if (typeof label !== 'string') return label;
-            const words = label.split(' ');
-            let lines = [];
-            let currentLine = '';
-            for (const word of words) {
-                if (currentLine.length === 0) {
-                    currentLine = word;
-                } else if (currentLine.length + word.length + 1 <= maxWidth) {
-                    currentLine += ' ' + word;
-                } else {
-                    lines.push(currentLine);
-                    currentLine = word;
-                }
-            }
-            if (currentLine.length > 0) {
-                lines.push(currentLine);
-            }
-            
-            // If a single word is longer than maxWidth, split it
-            return lines.map(line => {
-                if (line.length > maxWidth) {
-                    const parts = [];
-                    for (let i = 0; i < line.length; i += maxWidth) {
-                        parts.push(line.substring(i, i + maxWidth));
+        // Common Chart.js configuration
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: {
+                            family: "'Noto Sans KR', sans-serif",
+                            size: 12
+                        },
+                        padding: 15
                     }
-                    return parts;
+                },
+                tooltip: {
+                    enabled: true, 
+                    backgroundColor: 'rgba(38, 50, 56, 0.9)',
+                    titleFont: { family: "'Noto Sans KR', sans-serif", size: 14, weight: 'bold' },
+                    bodyFont: { family: "'Noto Sans KR', sans-serif", size: 12 },
+                    padding: 10,
+                    cornerRadius: 4,
+                    boxPadding: 4,
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y + '명';
+                            }
+                            return label;
+                        }
+                    }
                 }
-                return line;
-            }).flat();
-        }
-
-        // Chart.js Global Configuration
-        Chart.defaults.font.family = "'Pretendard', sans-serif";
-        Chart.defaults.color = '#263238'; // Dark Text
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        font: { family: "'Noto Sans KR', sans-serif", size: 11 },
+                        callback: function(value) { if (Number.isInteger(value)) { return value; } } // 정수 눈금만 표시
+                    },
+                    grid: {
+                        color: '#E0E0E0' // Light grey grid lines
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: { family: "'Noto Sans KR', sans-serif", size: 11 }
+                    },
+                    grid: {
+                        display: false // X축 그리드 라인 숨김
+                    }
+                }
+            }
+        };
+        
+        const chartColors = {
+            primary: '#2A62B6',
+            secondary: '#4ECDC4',
+            accent: '#A9A9A9',
+            support: '#E0F2FE',
+            darkText: '#263238',
+            lightBlue: 'rgba(42, 98, 182, 0.6)', // Primary Blue with alpha
+            lightTeal: 'rgba(78, 205, 196, 0.6)', // Secondary Teal with alpha
+            lightGrey: 'rgba(169, 169, 169, 0.6)' // Accent Grey with alpha
+        };
 
         // Chart 1: AI Usage Frequency
         const aiUsageCtx = document.getElementById('aiUsageFrequencyChart').getContext('2d');
-        const aiUsageData = {
-            labels: [
-                wrapLabel('아예 쓰지 않는다'), 
-                wrapLabel('아주 가끔 쓴다'), 
-                wrapLabel('보통이다'), 
-                wrapLabel('종종 쓴다'), 
-                wrapLabel('자주 쓴다')
-            ],
-            datasets: [{
-                label: '응답 수',
-                data: [1, 2, 2, 9, 5],
-                backgroundColor: [
-                    '#A9A9A9', // Accent Grey
-                    '#E0F2FE', // Supporting Light Blue
-                    '#4ECDC4', // Secondary Teal
-                    '#2A62B6', // Primary Blue
-                    '#1E4E8C'  // Darker Primary Blue
-                ],
-                borderColor: '#FFFFFF',
-                borderWidth: 2
-            }]
-        };
         new Chart(aiUsageCtx, {
-            type: 'pie', // 또는 'bar'
-            data: aiUsageData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: false,
-                    },
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                               boxWidth: 15,
-                               padding: 15,
-                               font: { size: 11 }
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed !== null) {
-                                    label += context.parsed;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((context.parsed / total) * 100).toFixed(1) + '%';
-                                    label += ` (${percentage})`;
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
+            type: 'bar',
+            data: {
+                labels: ['아예 쓰지 않는다', '아주 가끔 쓴다', '보통이다', '종종 쓴다', '자주 쓴다'],
+                datasets: [{
+                    label: '응답 수',
+                    data: [1, 2, 2, 9, 5],
+                    backgroundColor: [
+                        chartColors.lightGrey,
+                        chartColors.support,
+                        chartColors.lightTeal,
+                        chartColors.secondary,
+                        chartColors.primary
+                    ],
+                    borderColor: chartColors.darkText,
+                    borderWidth: 1
+                }]
+            },
+            options: { ...commonChartOptions }
         });
 
         // Chart 2: AI Trust Level
         const aiTrustCtx = document.getElementById('aiTrustLevelChart').getContext('2d');
-        const aiTrustData = {
-            labels: [
-                wrapLabel('매우 아니다'), 
-                wrapLabel('아니다'), 
-                wrapLabel('보통이다'), 
-                wrapLabel('그렇다'), 
-                wrapLabel('매우 그렇다')
-            ],
-            datasets: [{
-                label: '응답 수',
-                data: [0, 0, 8, 10, 1],
-                backgroundColor: [
-                    '#FFCDD2', // Light Red (for '매우 아니다', '아니다' if they had values)
-                    '#EF9A9A', // Red
-                    '#A9A9A9', // Accent Grey for '보통이다'
-                    '#4ECDC4', // Secondary Teal for '그렇다'
-                    '#2A62B6'  // Primary Blue for '매우 그렇다'
-                ],
-                borderColor: '#FFFFFF',
-                borderWidth: 2
-            }]
-        };
         new Chart(aiTrustCtx, {
-            type: 'bar', // 또는 'pie'
-            data: aiTrustData,
-            options: {
-                indexAxis: 'y', // 가로 막대 차트
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0 // 정수만 표시
-                        }
-                    },
-                    y: {
-                        ticks: {
-                               font: { size: 11 }
-                        }
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: false,
-                    },
-                    legend: {
-                        display: false // 막대 차트에서는 범례가 불필요할 수 있음
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.x !== null) { // 가로 막대 차트이므로 x 사용
-                                    label += context.parsed.x;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = ((context.parsed.x / total) * 100).toFixed(1) + '%';
-                                    label += ` (${percentage})`;
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Chart 3: AI Citation Experience
-        const aiCitationCtx = document.getElementById('aiCitationExperienceChart').getContext('2d');
-        const aiCitationData = {
-            labels: [
-                wrapLabel('매우 아니다'), 
-                wrapLabel('아니다'), 
-                wrapLabel('보통이다'), 
-                wrapLabel('그렇다'), 
-                wrapLabel('매우 그렇다')
-            ],
-            datasets: [{
-                label: '응답 수',
-                data: [7, 4, 1, 6, 1],
-                backgroundColor: [
-                    '#FF7043', // Orange Red (매우 아니다)
-                    '#FFA726', // Orange (아니다)
-                    '#A9A9A9', // Accent Grey (보통이다)
-                    '#4ECDC4', // Secondary Teal (그렇다)
-                    '#2A62B6'  // Primary Blue (매우 그렇다)
-                ],
-                borderColor: '#FFFFFF',
-                borderWidth: 2
-            }]
-        };
-        new Chart(aiCitationCtx, {
-            type: 'pie', // 또는 'bar'
-            data: aiCitationData,
+            type: 'pie',
+            data: {
+                labels: ['보통이다', '그렇다', '매우 그렇다'], // 0인 값은 제외
+                datasets: [{
+                    label: '응답 비율',
+                    data: [42.1, 52.6, 5.3], // 실제 비율 값
+                    backgroundColor: [
+                        chartColors.lightTeal,
+                        chartColors.secondary,
+                        chartColors.primary
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    title: {
-                        display: false,
-                    },
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                               boxWidth: 15,
-                               padding: 15,
-                               font: { size: 11 }
-                        }
-                    },
+                    legend: { ...commonChartOptions.plugins.legend },
                     tooltip: {
+                         ...commonChartOptions.plugins.tooltip,
                         callbacks: {
                             label: function(context) {
-                                let label = context.dataset.label || '';
+                                let label = context.label || '';
                                 if (label) {
                                     label += ': ';
                                 }
                                 if (context.parsed !== null) {
-                                    label += context.parsed;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    // 원본 데이터의 비율 사용 (합계 100.1% 고려)
-                                    const originalPercentages = [36.8, 21.1, 5.3, 31.6, 5.3];
-                                    label += ` (${originalPercentages[context.dataIndex]}%)`;
+                                    label += context.parsed.toFixed(1) + '%';
                                 }
                                 return label;
                             }
                         }
                     }
-                }
+                },
+                scales: { x: { display: false }, y: { display: false } }, // 파이 차트에는 축 불필요
             }
         });
 
-        // Set generation date
-        document.getElementById('generationDate').textContent = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        // Chart 3: Source Citation Experience
+        const sourceCitationCtx = document.getElementById('sourceCitationChart').getContext('2d');
+        new Chart(sourceCitationCtx, {
+            type: 'bar',
+            data: {
+                labels: ['매우 아니다', '아니다', '보통이다', '그렇다', '매우 그렇다'],
+                datasets: [{
+                    label: '응답 수',
+                    data: [7, 4, 1, 6, 1],
+                    backgroundColor: [
+                        chartColors.primary,
+                        chartColors.lightBlue,
+                        chartColors.lightGrey,
+                        chartColors.lightTeal,
+                        chartColors.secondary
+                    ],
+                    borderColor: chartColors.darkText,
+                    borderWidth: 1
+                }]
+            },
+            options: { ...commonChartOptions }
+        });
+
     </script>
     </body>
 </html>
+```
